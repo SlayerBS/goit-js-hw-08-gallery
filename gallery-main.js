@@ -1,17 +1,22 @@
+import gallery from './gallery-items.js';
+
 const lightBoxContainerRef = document.querySelector('.js-lightbox');
 const lightBoxImageRef = document.querySelector('.lightbox__image');
 const lightBoxCloseRef = document.querySelector('.lightbox__button');
-
-import gallery from './gallery-items.js';
-
 const galleryContainer = document.querySelector('.js-gallery');
 const overlayRef = document.querySelector('.lightbox__overlay');
-const galleryMarkup = createGalleryMarkup(gallery);
+
+const galleryMarkup = createGalleryMarkup(gallery); //создание разметки
 
 galleryContainer.insertAdjacentHTML('beforeend', galleryMarkup);
 
 galleryContainer.addEventListener('click', onGalleryContainerClick);
+
 overlayRef.addEventListener('click', onBtnCloseLightBox);
+
+const galleryImagesList = [...document.querySelectorAll('.gallery__image')]; //массив список всех изображений
+
+lightBoxCloseRef.addEventListener('click', onBtnCloseLightBox);
 
 function createGalleryMarkup() {
   return gallery
@@ -33,8 +38,6 @@ function createGalleryMarkup() {
     .join('');
 }
 
-const galleryImagesList = [...document.querySelectorAll('.gallery__image')]; //массив список всех изображений
-
 function onGalleryContainerClick(evt) {
   evt.preventDefault();
 
@@ -48,15 +51,10 @@ function onGalleryContainerClick(evt) {
 
 function lightBoxOpen(image) {
   lightBoxContainerRef.classList.add('is-open');
-
   lightBoxImageRef.src = image.dataset.source;
-
   lightBoxImageRef.dataset.index = galleryImagesList.indexOf(image);
-
   window.addEventListener('keydown', onKeyPress);
 }
-
-lightBoxCloseRef.addEventListener('click', onBtnCloseLightBox);
 
 function onBtnCloseLightBox() {
   lightBoxContainerRef.classList.remove('is-open');
